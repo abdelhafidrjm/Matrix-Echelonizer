@@ -83,7 +83,4 @@ if response == 1 or response == 2:
                 print(f"|{matEchelone[i][j]:+.2f}", end="|")
             print("\n---------------------")
             
-        print("bye-bye")
-
-else:
-    print("bye-bye")
+print("bye-bye")
