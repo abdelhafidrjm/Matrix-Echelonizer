@@ -3,13 +3,13 @@ import tkinter as tk
 root = tk.Tk()
 root.maxsize(500, 500)
 root.title("Matrix Echelonizer")
-root.config(background="#5094BE")
+root.config(background="#8925B3")
 
 n = 0
 m = 0
 
 def echelon(n , m, mat):
-# initialization
+    # initialization
     k = 0
     p = 0
     
@@ -25,10 +25,7 @@ def echelon(n , m, mat):
                 
             if l < n:
                 # alterning the two lines
-                for r in range(p, m):
-                    swap = mat[k][r]
-                    mat[k][r] = mat[l][r]
-                    mat[l][r] = swap
+                for r in range(p, m): mat[k][r], mat[l][r] = mat[l][r], mat[k][r]
                 pivot = mat[k][p]
             else:
                 # no pivot in this column so next one
@@ -39,25 +36,25 @@ def echelon(n , m, mat):
                 else:
                     return mat
                 
-# Li <- Li + aLj
+        # Li <- Li + aLj
         for i in range(k+1, n):
             alpha = -mat[i][p] / pivot
             for j in range(p, m):
                 mat[i][j] = mat[i][j] + alpha * mat[k][j]
                 
-# Next pivot
+        # Next pivot
         k += 1
         p += 1
         
-# Return the reduced matrix
+    # Return the reduced matrix
     return mat
         
-def displayEch(n, m, mat):
-    titleE = tk.Label(matriceE, text = "L'Echelonement : ", font = ("Arial", 15, "bold"))
-    titleE.grid(row = 0, column = 0, columnspan = m, sticky = "n")
+# Function that display matrices
+def display(n, m, matrix, title, parent):
+    title.grid(row = 0, column = 0, columnspan = m, sticky = "n")
     for i in range(n):
         for j in range(m):
-            element = tk.Label(matriceE, text = echelon(n, m, mat)[i][j], borderwidth = 1, relief="solid", width = 5, height = 2)
+            element = tk.Label(parent, text = matrix[i][j], borderwidth = 1, relief="solid", width = 5, height = 2)
             element.grid(row = i+1, column = j, padx = 5, pady = 5)
         
 # def saisez():
@@ -76,9 +73,9 @@ def ech(response):
         # m = tk.Entry(lc).grid(row = 1, column = 1)
         # submitButton = tk.Button(lc, text = "Saisez les", command = saisez)
         # submitButton.grid(row = 2, column = 0, columnspan = 2)
-        
         # lc.pack()
         pass
+    
     elif response == 2:
         n = 3
         m = 3
@@ -86,54 +83,33 @@ def ech(response):
             [0, 1, 2],
             [7, 0, 4],
             [0, 5, 6]
-        ]
-
-        # TEMPORARRY
-        # print("Je suis désolé car je n'ai pas encore ajouté d'interface dynamique, donc nous allons nous en tenir à la deuxième option.")
-        
-        # print("\n-------matrice-------")
-        # for i in range(n):
-        #     for j in range(m):
-        #         print(f"|{mat[i][j]:+.2f}", end="|")
-        #     print("\n---------------------")
-
-        
-        # print("\n--matrice échelonnée-")
-        # for i in range(n):
-        #     for j in range(m):
-        #         print(f"|{matEchelone[i][j]:+.2f}", end="|")
-        #     print("\n---------------------")
+            ]
             
         title = tk.Label(matrice, text = "La Matrice : ", font = ("Arial", 15, "bold"))
-        title.grid(row = 0, column = 0, columnspan = m)
-        for i in range(n):
-            for j in range(m):
-                element = tk.Label(matrice, text = mat[i][j], borderwidth = 1, relief="solid", width = 5, height = 2)
-                element.grid(row = i+1, column = j, padx = 5, pady = 5)
+        display(n, m, mat, title, matrice)
                 
+        tk.Label(matrices, text = "→", font = ("Arial", 20), bg = "#8925B3").grid(row = 0, column = 1) 
+                
+        titleE = tk.Label(matriceE, text = "L'Echelonement : ", font = ("Arial", 15, "bold"))
+        display(n, m, echelon(n, m, mat), titleE, matriceE)
         
-        displayEch(n, m, mat)
+        # disabling the button so it stops redesplaying the example
         button2.config(state = "disabled")
 
             
-    bye.pack(anchor = "w")
+    # bye.pack(anchor = "w")
             
-# def onClick(resp):
-#     global response
-#     response = resp
     
     
-
-
 
 bienvenue = tk.Label(root, 
                   text = "Bienvenue à l'echelonizer matriciel calculator!\nSouhaitez-vous", 
-                  bg = "#5094BE", 
+                  bg = "#8925B3", 
                   fg = "#fff", 
                   font = ("Helvetica", 18)
                   ).pack(anchor = "w")
 
-
+# input
 buttons = tk.Frame(root)
 buttons.columnconfigure(0, weight = 1)
 
@@ -178,49 +154,12 @@ matrice = tk.Frame(matrices)
 matriceE = tk.Frame(matrices)
 
 matrices.columnconfigure(0, weight = 1)
-matrices.columnconfigure(1, weight = 1)
-matrices.config(bg = "#5094BE")
+matrices.columnconfigure(1, weight = 2)
+matrices.columnconfigure(2, weight = 1)
+matrices.config(bg = "#8925B3")
 
 matrice.grid(row = 0, column = 0, padx = 5, pady = 5)
-matriceE.grid(row = 0, column = 1, padx = 5, pady = 5)
+matriceE.grid(row = 0, column = 2, padx = 5, pady = 5)
 matrices.pack()
 
-bye = tk.Label(root, 
-                  text = "au revoir", 
-                  bg = "#5094BE", 
-                  fg = "#fff", 
-                  font = ("Helvetica", 20)
-                  )
-
-
-
 root.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#match response:
-    # case 1:
-    #     print("saisez la taille de matrice")
-    #     n, m = int(input("n = ")), int(input("m = "))
-    #     mat = [[]]
-    #     print("Saisez la matrice: ")
-    #     for i in range(n):
-    #         for j in range(m):
-    #             mat[i][j] = input(f"a{i}{j} = ")
-        
-
-
-
