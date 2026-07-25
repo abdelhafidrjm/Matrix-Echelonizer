@@ -13,10 +13,19 @@ Numbers = []
 Number = 0
 ops = []
 op = ""
+countD = 0
 
 # subFunction
 def refresh(n):
-    n = int(n) if n == round(n) else "%.2f" % n
+    if n == pi : 
+        n = "π" 
+    elif n == ".":
+        n = "."
+    elif n == 0:
+        n = ""
+    else:
+        n = int(n) if n == round(n) else n
+    
     textbox.config(text = n)
     
 def clear(n):
@@ -26,15 +35,6 @@ def clear(n):
     op = ""
     ops.clear()
 
-# Calculator functions
-def iN(num):
-    global Number
-    if num != pi:
-        Number = Number * 10 + num
-    else:
-        Number = num
-    refresh(Number)
-insertNumber = iN
 
 def backspace():
     global Number
@@ -47,24 +47,33 @@ def delete():
     refresh(Number)
     
     
-# def decimalNumber(num):
-#     global Number, insertNumber
+# Calculator functions
+def iN(num):
+    global Number
+    if num == pi:
+        Number = num
+    else:
+        Number = Number * 10 + num
+    refresh(Number)
+insertNumber = iN
     
-#     def iD(n):
-#         global Number
-#         Number = Number + 
-    
-    
-#     if Numbers == [] or Numbers[-1] == 0:
-#         Number = 0.0
-#     else:
-#         Number = float(Number)
-#     refresh(Number)
+def iDe(num):
+    global Number, countD
+    countD += 1
+    if num == pi:
+        Number = pi
+    else:    
+        Number += num / pow(10, countD)
+    refresh(Number)
 
 
 def operationSaver(ope):
-    global ops, op, Numbers, Number
-    if ope != "=" : 
+    global ops, op, Numbers, Number, insertNumber
+    if ope == ".":
+        Number = float(Number/1)
+        insertNumber = iDe
+        refresh(ops[i])
+    elif ope != "=" : 
         op = ope
         ops.append(op)
         Numbers.append(Number)
@@ -74,6 +83,7 @@ def operationSaver(ope):
         Numbers.append(Number)
         result = Numbers[0]
         for i in range(len(ops)):
+            insertNumber = iN
             match ops[i]:
                 case "+":
                     result += Numbers[i+1]
@@ -112,7 +122,7 @@ buttonnumber8 = Button(theGrid, height = 2, text = 8,   font = ("Ink Free", 15, 
 buttonnumber9 = Button(theGrid, height = 2, text = 9,   font = ("Ink Free", 15, "bold"), command = lambda : insertNumber(9),    bg = "#9A3131", width = 8, borderwidth=5, relief= RAISED)
 buttonnumber0 = Button(theGrid, height = 2, text = 0,   font = ("Ink Free", 15, "bold"), command = lambda : insertNumber(0),    bg = "#9A3131", width = 8, borderwidth=5, relief= RAISED)
 buttonnumberp = Button(theGrid, height = 2, text = "π", font = ("Ink Free", 15, "bold"), command = lambda : insertNumber(pi),   bg = "#9A3131", width = 8, borderwidth=5, relief= RAISED)
-buttonnumberd = Button(theGrid, height = 2, text = ".", font = ("Ink Free", 15, "bold"), command = lambda : insertNumber("."),  bg = "#9A3131", width = 8, borderwidth=5, relief= RAISED)
+buttonnumberd = Button(theGrid, height = 2, text = ".", font = ("Ink Free", 15, "bold"), command = lambda : operationSaver("."),  bg = "#9A3131", width = 8, borderwidth=5, relief= RAISED)
 
 # Arethmetic Operations
 buttonpls = Button(theGrid, height = 2, bg = "#2427df", fg = "#fff",borderwidth = 5, relief = RAISED, text = "+", font = ("Ink Free", 15, "bold"), command = lambda : operationSaver("+"), width = 10)
@@ -122,8 +132,8 @@ buttondiv = Button(theGrid, height = 2, bg = "#2427df", fg = "#fff",borderwidth 
 buttoneql = Button(theGrid, height = 2, bg = "#2427df", fg = "#fff",borderwidth = 5, relief = RAISED, text = "=", font = ("Ink Free", 15, "bold"), command = lambda : operationSaver("="), width = 10)
 
 # Functionalities
-buttonbackspace = Button(theGrid,   height = 2, width = 10,bg = "#2427df", fg = "#fff",borderwidth = 5, relief = RAISED, text = "Backspace", font = ("Ink Free", 15), command = backspace)
-buttondelete = Button(theGrid,      height = 2, width = 10,bg = "#2427df", fg = "#fff",borderwidth = 5, relief = RAISED, text = "Delete", font = ("Ink Free", 15), command = delete)
+buttonbackspace = Button(theGrid,   height = 2, width = 11,bg = "#2427df", fg = "#fff",borderwidth = 5, relief = RAISED, text = "Backspace", font = ("Ink Free", 15), command = backspace)
+buttondelete = Button(theGrid,      height = 2, width = 11,bg = "#2427df", fg = "#fff",borderwidth = 5, relief = RAISED, text = "Delete", font = ("Ink Free", 15), command = delete)
 
 buttonclose = Button(theGrid,text="Quit", font = ("Ink Free", 15), command=root.destroy)
 
