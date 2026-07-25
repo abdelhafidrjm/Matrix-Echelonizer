@@ -1,10 +1,12 @@
 import tkinter as tk
 
 root = tk.Tk()
-root.geometry("600x200")
+root.maxsize(500, 500)
 root.title("Matrix Echelonizer")
 root.config(background="#5094BE")
 
+n = 0
+m = 0
 
 def echelon(n , m, mat):
 # initialization
@@ -50,9 +52,34 @@ def echelon(n , m, mat):
 # Return the reduced matrix
     return mat
         
-# response = 0
+def displayEch(n, m, mat):
+    titleE = tk.Label(matriceE, text = "L'Echelonement : ", font = ("Arial", 15, "bold"))
+    titleE.grid(row = 0, column = 0, columnspan = m, sticky = "n")
+    for i in range(n):
+        for j in range(m):
+            element = tk.Label(matriceE, text = echelon(n, m, mat)[i][j], borderwidth = 1, relief="solid", width = 5, height = 2)
+            element.grid(row = i+1, column = j, padx = 5, pady = 5)
+        
+# def saisez():
+#     global n, m
+#     n = n.get()
+#     m = m.get()
+        
 def ech(response):
-    if response == 1 or response == 2:
+    global n, m
+    if response == 1:
+        # ligne = tk.Label(lc, text = "Saisez le nombre des lignes")
+        # ligne.grid(row = 0, column=0)
+        # n = tk.Entry(lc).grid(row = 0, column = 1)
+        # ligne = tk.Label(lc, text = "Saisez le nombre des lignes")
+        # ligne.grid(row = 1, column = 0)
+        # m = tk.Entry(lc).grid(row = 1, column = 1)
+        # submitButton = tk.Button(lc, text = "Saisez les", command = saisez)
+        # submitButton.grid(row = 2, column = 0, columnspan = 2)
+        
+        # lc.pack()
+        pass
+    elif response == 2:
         n = 3
         m = 3
         mat = [
@@ -70,26 +97,27 @@ def ech(response):
         #         print(f"|{mat[i][j]:+.2f}", end="|")
         #     print("\n---------------------")
 
-        # matEchelone = echelon(n, m, mat)
+        
         # print("\n--matrice échelonnée-")
         # for i in range(n):
         #     for j in range(m):
         #         print(f"|{matEchelone[i][j]:+.2f}", end="|")
         #     print("\n---------------------")
             
-            
-        # for i in range(n):
-        #     for j in range(m):
-        #         # Création du label avec les coordonnées en texte
-        #         elementij = mat[i][j]
-        #         element = tk.Label(root, text = elementij, borderwidth = 1, relief="solid", width = 10, height = 2)
-        #         element.grid(row = i, column = j, padx = 5, pady = 5)
+        title = tk.Label(matrice, text = "La Matrice : ", font = ("Arial", 15, "bold"))
+        title.grid(row = 0, column = 0, columnspan = m)
+        for i in range(n):
+            for j in range(m):
+                element = tk.Label(matrice, text = mat[i][j], borderwidth = 1, relief="solid", width = 5, height = 2)
+                element.grid(row = i+1, column = j, padx = 5, pady = 5)
+                
+        
+        displayEch(n, m, mat)
+        button2.config(state = "disabled")
 
             
-        bye.pack(anchor = "w")
-    else:
-        bye.pack(anchor = "w")
-        
+    bye.pack(anchor = "w")
+            
 # def onClick(resp):
 #     global response
 #     response = resp
@@ -102,27 +130,60 @@ bienvenue = tk.Label(root,
                   text = "Bienvenue à l'echelonizer matriciel calculator!\nSouhaitez-vous", 
                   bg = "#5094BE", 
                   fg = "#fff", 
-                  font = ("Helvetica", 20)
+                  font = ("Helvetica", 18)
                   ).pack(anchor = "w")
 
 
+buttons = tk.Frame(root)
+buttons.columnconfigure(0, weight = 1)
 
-button1 = tk.Button(root, 
+
+button1 = tk.Button(buttons, 
                     text = "1) échelonner une matrice?", 
-                    command = lambda : ech(1)
-                    ).pack(anchor = "w")
+                    command = lambda : ech(1),
+                    width = 35,
+                    anchor="w", 
+                    relief = "raised", 
+                    borderwidth = 5, 
+                    )
+button1.grid(row = 0, column = 0, sticky = "w")
 
-button2 = tk.Button(root, 
+button2 = tk.Button(buttons, 
                     text = "2) voir comment le programme fonctionne?", 
-                    command = lambda : ech(2)
-                    ).pack(anchor = "w")
+                    command = lambda : ech(2), 
+                    width = 35,
+                    anchor="w", 
+                    relief = "raised", 
+                    borderwidth = 5
+                    )
+button2.grid(row = 1, column = 0, sticky = "w")
 
-button3 = tk.Button(root, 
+button3 = tk.Button(buttons, 
                     text = "3) quitter",
-                    command = lambda : ech(3)
-                    ).pack(anchor = "w")
+                    width = 35, 
+                    command = root.destroy,
+                    anchor="w", 
+                    relief = "raised", 
+                    borderwidth = 5
+                    )
+button3.grid(row = 2, column = 0, sticky = "w")
 
-element = tk.Label(root, text = "Matrice : ")
+buttons.pack(padx = 5, pady = 5, anchor = "w")
+
+
+lc = tk.Frame(root)
+matrices = tk.Frame(root)
+
+matrice = tk.Frame(matrices)
+matriceE = tk.Frame(matrices)
+
+matrices.columnconfigure(0, weight = 1)
+matrices.columnconfigure(1, weight = 1)
+matrices.config(bg = "#5094BE")
+
+matrice.grid(row = 0, column = 0, padx = 5, pady = 5)
+matriceE.grid(row = 0, column = 1, padx = 5, pady = 5)
+matrices.pack()
 
 bye = tk.Label(root, 
                   text = "au revoir", 

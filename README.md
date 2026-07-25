@@ -21,3 +21,5 @@ Le programme effectue des opérations élémentaires de ligne pour simplifier un
 ---------------------  
 |+0.00||+0.00||-4.00|  
 ---------------------  
+
+j'ai efface un fichier indésirable
